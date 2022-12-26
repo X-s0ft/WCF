@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DataBase_WCF_Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="DataBase_WCF_Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Customer" EntityType="DataBase_WCF_Model.Customer" />
+    <EntitySet Name="Orders" EntityType="DataBase_WCF_Model.Orders" />
+    <AssociationSet Name="FK_Customer_Orders" Association="DataBase_WCF_Model.FK_Customer_Orders">
+      <End Role="Orders" EntitySet="Orders" />
+      <End Role="Customer" EntitySet="Customer" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="CustomerId" />
+    </Key>
+    <Property Name="CustomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SecondName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="OrdersId" Type="Int32" />
+    <NavigationProperty Name="Orders" Relationship="DataBase_WCF_Model.FK_Customer_Orders" FromRole="Customer" ToRole="Orders" />
+  </EntityType>
+  <EntityType Name="Orders">
+    <Key>
+      <PropertyRef Name="OrderId" />
+    </Key>
+    <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Customer" Relationship="DataBase_WCF_Model.FK_Customer_Orders" FromRole="Orders" ToRole="Customer" />
+  </EntityType>
+  <Association Name="FK_Customer_Orders">
+    <End Type="DataBase_WCF_Model.Orders" Role="Orders" Multiplicity="0..1" />
+    <End Type="DataBase_WCF_Model.Customer" Role="Customer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Orders">
+        <PropertyRef Name="OrderId" />
+      </Principal>
+      <Dependent Role="Customer">
+        <PropertyRef Name="OrdersId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
